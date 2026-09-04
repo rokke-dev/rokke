@@ -153,7 +153,7 @@ await assertPortReleased(port);
     `${imports.join("\n")}\n\n${assertions.join("\n")}\n${runtimeValidation}\nconsole.log("validated ${packageDirectories.length} Rokke packages");\n`,
   );
 
-  await run(["bun", "install", "--offline"], consumerRoot);
+  await run(["bun", "install", "--prefer-offline"], consumerRoot);
   await run(["bunx", "tsc", "--noEmit", "-p", "tsconfig.json"], consumerRoot);
   await run(["bun", "run", "index.ts"], consumerRoot);
   console.log(`Validated ${packageDirectories.length} package tarballs in an isolated consumer.`);
