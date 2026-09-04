@@ -43,6 +43,7 @@ Each package inside `packages/*` is an independent package published to npm as `
 ### Design Guidelines
 
 * **Zero third-party runtime dependencies in the core:** Core packages rely on Bun and Web APIs. Official integration packages may depend on the SDK they adapt when that dependency is explicit and justified.
+* **Public implementation only:** Keep internal planning, threat analysis, unpublished comparisons and working metadata outside the repository checkout.
 * **Contracts over concrete classes:** Expose interfaces and tokens. The IoC container resolves contracts, not concrete implementations.
 * **Strict TypeScript 7 rules:**
   * No `any` — use strict types, generics, or `unknown`.

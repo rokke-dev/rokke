@@ -28,6 +28,13 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 .cache
 .eslintcache
 
+# private project material
+/docs/
+/internal/
+/private/
+/ROADMAP.md
+/KNOWN_ISSUES.md
+
 # IDE & OS
 .idea
 .vscode
