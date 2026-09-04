@@ -58,13 +58,20 @@ jobs:
         run: bun run validate:packages
 
       - name: Verify release version and tarball count
-        if: github.event_name == 'push'
         run: |
-          if [[ ! "$GITHUB_REF_NAME" =~ ^v0\.1\.0-alpha\.[0-9]+$ ]]; then
-            echo "Invalid prerelease tag: $GITHUB_REF_NAME"
-            exit 1
+          if [ "$GITHUB_EVENT_NAME" = "push" ]; then
+            if [[ ! "$GITHUB_REF_NAME" =~ ^v0\.1\.0-alpha\.[0-9]+$ ]]; then
+              echo "Invalid prerelease tag: $GITHUB_REF_NAME"
+              exit 1
+            fi
+            expected_version="${GITHUB_REF_NAME#v}"
+          else
+            expected_version="$(bun -e 'console.log((await Bun.file("packages/core/package.json").json()).version)')"
+            if [[ ! "$expected_version" =~ ^0\.1\.0-alpha\.[0-9]+$ ]]; then
+              echo "Invalid package prerelease version: $expected_version"
+              exit 1
+            fi
           fi
-          expected_version="${GITHUB_REF_NAME#v}"
           package_count=0
           for manifest in packages/*/package.json; do
             actual_version="$(bun -e 'console.log((await Bun.file(process.argv[1]).json()).version)' "$manifest")"
@@ -81,14 +88,10 @@ jobs:
           fi
 
       - name: Publish the validated tarballs using the alpha dist-tag
+        if: github.event_name == 'push'
         env:
           BUN_AUTH_TOKEN: ${{ secrets.BUN_AUTH_TOKEN }}
-          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           for tarball in .release-tarballs/*.tgz; do
-            if [ "$DRY_RUN" = "true" ]; then
-              bun publish "$tarball" --dry-run --tag alpha --access public
-            else
-              bun publish "$tarball" --tag alpha --access public
-            fi
+            bun publish "$tarball" --tag alpha --access public
           done
