@@ -34,11 +34,11 @@
   "homepage": "https://rokke.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rokke-dev/framework.git",
+    "url": "git+https://github.com/rokke-dev/rokke.git",
     "directory": "packages/logger"
   },
   "bugs": {
-    "url": "https://github.com/rokke-dev/framework/issues"
+    "url": "https://github.com/rokke-dev/rokke/issues"
   },
   "keywords": [
     "bun",

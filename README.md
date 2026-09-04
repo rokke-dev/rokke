@@ -50,8 +50,8 @@ Rokke is highly modular. You only load what you need.
 
 ```bash
 # Clone the repository
-git clone https://github.com/rokke-dev/framework.git
-cd framework
+git clone https://github.com/rokke-dev/rokke.git
+cd rokke
 
 # Install workspace dependencies (requires Bun 1.4+)
 bun install
