@@ -1,0 +1,27 @@
+{
+  "name": "example",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun --watch index.ts",
+    "start": "bun run index.ts",
+    "check": "bunx tsc --noEmit -p tsconfig.json",
+    "test": "bun run ../scripts/smoke-example.ts"
+  },
+  "dependencies": {
+    "@rokke/config": "workspace:*",
+    "@rokke/core": "workspace:*",
+    "@rokke/http": "workspace:*",
+    "@rokke/logger": "workspace:*",
+    "@rokke/orm": "workspace:*",
+    "@rokke/security": "workspace:*",
+    "@rokke/validation": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^7"
+  }
+}

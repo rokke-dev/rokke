@@ -1,0 +1,107 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  minimum-bun:
+    name: Bun 1.4.0 (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup minimum supported Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+
+      - name: Install dependencies from lockfile
+        run: bun install --frozen-lockfile
+
+      - name: Verify TypeScript composite project references
+        run: bun run check
+
+      - name: Type-check the official example
+        run: bun run check:example
+
+      - name: Compile declaration maps
+        run: bun run build
+
+      - name: Run tests with coverage
+        run: bun test --coverage
+
+      - name: Run the official example smoke test
+        run: bun run smoke:example
+
+      - name: Compile documentation snippets
+        run: bun run validate:docs
+
+      - name: Validate package tarballs in an isolated consumer
+        run: bun run validate:packages
+
+      - name: Upload minimum-Bun coverage report
+        if: matrix.os == 'ubuntu-latest' && always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-bun-1.4.0
+          path: coverage/
+          retention-days: 7
+
+  latest-bun:
+    name: Latest stable Bun (Ubuntu)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup latest stable Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies from lockfile
+        run: bun install --frozen-lockfile
+
+      - name: Verify TypeScript composite project references
+        run: bun run check
+
+      - name: Type-check the official example
+        run: bun run check:example
+
+      - name: Compile declaration maps
+        run: bun run build
+
+      - name: Run tests with coverage
+        run: bun test --coverage
+
+      - name: Run the official example smoke test
+        run: bun run smoke:example
+
+      - name: Compile documentation snippets
+        run: bun run validate:docs
+
+      - name: Validate package tarballs in an isolated consumer
+        run: bun run validate:packages

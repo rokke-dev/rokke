@@ -1,0 +1,50 @@
+# https://bun.sh/docs/runtime/bunfig
+
+logLevel = "warn"
+telemetry = false
+# preload = ["./src/instrumentation.ts"]
+
+[console]
+depth = 4
+
+[serve]
+port = 3000
+
+[run]
+shell = "bun"
+bun = true
+silent = true
+noOrphans = true
+elide-lines = 10
+
+[install]
+exact = true
+saveTextLockfile = true
+linker = "isolated"
+globalStore = true
+auto = "fallback"
+minimumReleaseAge = 259200 # 3 days
+minimumReleaseAgeExcludes = ["@types/bun", "typescript"]
+
+[install.cache]
+disable = false
+disableManifest = false
+
+[install.lockfile]
+save = true
+
+[install.scopes]
+"@rokke" = { url = "https://registry.npmjs.org/", token = "$BUN_AUTH_TOKEN" }
+
+[test]
+pathIgnorePatterns = ["vendor/**", "node_modules/**", "dist/**", "fixtures/**"]
+coverage = true
+coverageThreshold = { line = 0.8, function = 0.8 }
+coverageSkipTestFiles = true
+coverageReporter = ["text", "lcov"]
+coverageDir = "coverage"
+coveragePathIgnorePatterns = ["**/*.test.ts", "**/*.spec.ts", "**/*.bench.ts"]
+randomize = true
+
+# [test.reporter]
+# junit = "test-results.xml"

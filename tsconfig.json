@@ -1,0 +1,50 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "packages/core"
+    },
+    {
+      "path": "packages/fs"
+    },
+    {
+      "path": "packages/logger"
+    },
+    {
+      "path": "packages/config"
+    },
+    {
+      "path": "packages/http"
+    },
+    {
+      "path": "packages/view"
+    },
+    {
+      "path": "packages/query-builder"
+    },
+    {
+      "path": "packages/orm"
+    },
+    {
+      "path": "packages/security"
+    },
+    {
+      "path": "packages/validation"
+    },
+    {
+      "path": "packages/events"
+    },
+    {
+      "path": "packages/cache"
+    },
+    {
+      "path": "packages/testing"
+    },
+    {
+      "path": "packages/devtools"
+    },
+    {
+      "path": "packages/cli"
+    }
+  ]
+}

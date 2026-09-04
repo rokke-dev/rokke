@@ -1,0 +1,48 @@
+name: Bug report
+description: Report a reproducible defect in an implemented Rokke capability.
+title: "bug: "
+labels: ["type:bug", "status:needs-design"]
+body:
+  - type: markdown
+    attributes:
+      value: Do not report security vulnerabilities here; use the private advisory link.
+  - type: input
+    id: version
+    attributes:
+      label: Rokke version
+      placeholder: 0.1.0-alpha.1
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Bun version, operating system and database when relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include the smallest repository or code sample and exact commands.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Suggested severity
+      options: ["S0 — catastrophic", "S1 — release blocking", "S2 — significant", "S3 — minor"]
+    validations:
+      required: true

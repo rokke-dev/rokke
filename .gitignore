@@ -1,0 +1,35 @@
+# dependencies
+node_modules
+
+# build outputs
+dist
+out
+*.tgz
+*.tsbuildinfo
+
+# test & coverage
+coverage
+.rokke-package-validation-*
+.rokke-doc-validation-*
+.release-tarballs/
+*.lcov
+
+# logs
+logs
+*.log
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# environment variables
+.env
+.env.*
+!.env.example
+
+# caches
+.cache
+.eslintcache
+
+# IDE & OS
+.idea
+.vscode
+.DS_Store
+Thumbs.db

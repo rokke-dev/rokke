@@ -1,0 +1,17 @@
+{
+  "name": "@rokke/testing",
+  "version": "0.1.0-alpha.1",
+  "main": "./index.ts",
+  "types": "./dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "bun": "./index.ts", "import": "./index.ts", "default": "./index.ts" } },
+  "files": ["dist/**/*.d.ts", "dist/**/*.d.ts.map", "index.ts", "src", "README.md", "LICENSE"],
+  "publishConfig": { "access": "public", "tag": "alpha" },
+  "type": "module",
+  "dependencies": {
+    "@rokke/core": "workspace:*",
+    "@rokke/http": "workspace:*"
+  },
+  "engines": {
+    "bun": ">=1.4.0"
+  }
+}

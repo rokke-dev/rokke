@@ -1,0 +1,38 @@
+name: Capability proposal
+description: Propose a bounded capability tied to a validated user or reliability need.
+title: "proposal: "
+labels: ["type:feature", "status:needs-design"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and user impact
+      description: Describe the problem without prescribing implementation.
+    validations:
+      required: true
+  - type: dropdown
+    id: driver
+    attributes:
+      label: Primary driver
+      options: ["Validated user requirement", "Reliability or security", "Developer experience", "Multiple evaluator requests"]
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: List observable outcomes and failure cases.
+    validations:
+      required: true
+  - type: textarea
+    id: non_goals
+    attributes:
+      label: Non-goals
+    validations:
+      required: true
+  - type: textarea
+    id: packages
+    attributes:
+      label: Affected packages and compatibility
+    validations:
+      required: true

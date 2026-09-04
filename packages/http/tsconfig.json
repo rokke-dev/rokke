@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "."
+  },
+  "include": ["src/**/*.ts", "index.ts"],
+  "exclude": ["dist", "tests"],
+  "references": [
+    { "path": "../core" },
+    { "path": "../config" },
+    { "path": "../logger" },
+    { "path": "../validation" }
+  ]
+}

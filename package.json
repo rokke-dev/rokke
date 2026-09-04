@@ -1,0 +1,30 @@
+{
+  "name": "rokke",
+  "private": true,
+  "workspaces": ["packages/*", "example"],
+  "scripts": {
+    "dev": "bun --watch packages/http/index.ts",
+    "build": "bunx tsc -b",
+    "check": "bunx tsc -b",
+    "check:example": "bunx tsc --noEmit -p example/tsconfig.json",
+    "smoke:example": "bun run scripts/smoke-example.ts",
+    "validate:docs": "bun run scripts/validate-doc-snippets.ts",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "test:coverage": "bun test --coverage",
+    "validate:packages": "bun run scripts/validate-packages.ts",
+    "verify:fast": "bun run check && bun run check:example && bun test",
+    "verify": "bun run check && bun run check:example && bun run build && bun test --coverage && bun run smoke:example && bun run validate:docs && bun run validate:packages",
+    "bench": "bun run --bun bench",
+    "clean": "rm -rf packages/*/dist packages/*/*.tsbuildinfo node_modules bun.lock coverage"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^7"
+  },
+  "trustedDependencies": [],
+  "dependencies": {
+    "@types/node": "26.4.0",
+    "bun-types": "1.4.0"
+  }
+}

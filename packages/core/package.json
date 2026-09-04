@@ -1,0 +1,63 @@
+{
+  "name": "@rokke/core",
+  "version": "0.1.0-alpha.1",
+  "description": "Core application kernel, IoC container, service providers, and lifecycle management for Rokke framework on Bun",
+  "type": "module",
+  "main": "./index.ts",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "bun": "./index.ts",
+      "import": "./index.ts",
+      "default": "./index.ts"
+    }
+  },
+  "files": [
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map",
+    "index.ts",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "tag": "alpha"
+  },
+  "scripts": {
+    "build": "bunx tsc -b",
+    "prepublishOnly": "bunx tsc -b"
+  },
+  "author": "Fernando Duarte <ferchd@rokke.dev>",
+  "license": "MIT",
+  "homepage": "https://rokke.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rokke-dev/framework.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/rokke-dev/framework/issues"
+  },
+  "keywords": [
+    "bun",
+    "framework",
+    "framework",
+    "core",
+    "ioc",
+    "container",
+    "kernel",
+    "service-provider",
+    "solid"
+  ],
+  "peerDependencies": {
+    "typescript": "^7"
+  },
+  "engines": {
+    "bun": ">=1.4.0"
+  },
+  "dependencies": {
+    "@rokke/fs": "workspace:*"
+  }
+}

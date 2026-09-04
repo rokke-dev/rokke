@@ -1,0 +1,94 @@
+name: Publish Packages
+
+on:
+  push:
+    tags:
+      - "v0.1.0-alpha.*"
+  workflow_dispatch:
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish Packages with Bun PM
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install workspace dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build TypeScript declarations
+        run: bun run build
+
+      - name: Type-check workspace and example
+        run: |
+          bun run check
+          bun run check:example
+
+      - name: Run test suite with coverage gates
+        run: bun test --coverage
+
+      - name: Run example smoke test
+        run: bun run smoke:example
+
+      - name: Validate documentation snippets
+        run: bun run validate:docs
+
+      - name: Audit dependencies
+        run: bun audit
+
+      - name: Pack and validate final tarballs
+        env:
+          ROKKE_PACKAGE_OUTPUT_DIR: .release-tarballs
+        run: bun run validate:packages
+
+      - name: Verify release version and tarball count
+        if: github.event_name == 'push'
+        run: |
+          if [[ ! "$GITHUB_REF_NAME" =~ ^v0\.1\.0-alpha\.[0-9]+$ ]]; then
+            echo "Invalid prerelease tag: $GITHUB_REF_NAME"
+            exit 1
+          fi
+          expected_version="${GITHUB_REF_NAME#v}"
+          package_count=0
+          for manifest in packages/*/package.json; do
+            actual_version="$(bun -e 'console.log((await Bun.file(process.argv[1]).json()).version)' "$manifest")"
+            if [ "$actual_version" != "$expected_version" ]; then
+              echo "Version mismatch in $manifest: expected $expected_version, found $actual_version"
+              exit 1
+            fi
+            package_count=$((package_count + 1))
+          done
+          tarball_count="$(find .release-tarballs -maxdepth 1 -name '*.tgz' | wc -l | tr -d ' ')"
+          if [ "$tarball_count" -ne "$package_count" ]; then
+            echo "Expected $package_count tarballs, found $tarball_count"
+            exit 1
+          fi
+
+      - name: Publish the validated tarballs using the alpha dist-tag
+        env:
+          BUN_AUTH_TOKEN: ${{ secrets.BUN_AUTH_TOKEN }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          for tarball in .release-tarballs/*.tgz; do
+            if [ "$DRY_RUN" = "true" ]; then
+              bun publish "$tarball" --dry-run --tag alpha --access public
+            else
+              bun publish "$tarball" --tag alpha --access public
+            fi
+          done
