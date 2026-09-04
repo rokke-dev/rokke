@@ -91,6 +91,7 @@ jobs:
         if: github.event_name == 'push'
         env:
           BUN_AUTH_TOKEN: ${{ secrets.BUN_AUTH_TOKEN }}
+          NPM_CONFIG_TOKEN: ${{ secrets.BUN_AUTH_TOKEN }}
         run: |
           for tarball in .release-tarballs/*.tgz; do
             bun publish "$tarball" --tag alpha --access public
